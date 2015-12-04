@@ -7,3 +7,5 @@ vendor/
 composer.lock
 
 *~
+
+config.json
