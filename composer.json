@@ -1,0 +1,17 @@
+{
+    "name": "kevinalberca/sup_orm",
+    "description": "ORM fait pour le cours de LAMP",
+    "authors": [
+        {
+            "name": "Kevin Alberca",
+            "email": "kevin.alberca@supinternet.fr"
+        }
+    ],
+    "require": {
+        "symfony/yaml": "^3.0"
+    },
+    "autoload": {
+        "psr-4": { "": "src/" }
+    }
+
+}
