@@ -29,10 +29,19 @@ class DatabaseChecker
 
     }
 
+    public function listTable()
+    {
+        $req = $this->bdd->prepare("SELECT TABLE_NAME, COLUMN_NAME, DATA_TYPE FROM `information_schema`.`COLUMNS` WHERE TABLE_SCHEMA LIKE :db ");
+        $req->execute([
+            "db" => $this->dbname,
+        ]);
+
+        return $req->fetchAll();
+    }
 
     public function checkIfExist($host, $dbname, $dbuser, $dbpass)
     {
-        $req = $this->bdd->prepare("SELECT COUNT(*) as 'count' FROM `SCHEMATA` WHERE `SCHEMA_NAME` LIKE :db");
+        $req = $this->bdd->prepare("SELECT COUNT(*) as 'count' FROM `information_schema`.`SCHEMATA` WHERE `SCHEMA_NAME` LIKE :db");
         $req->execute([
             "db" => $dbname,
         ]);

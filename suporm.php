@@ -49,6 +49,25 @@ switch($argv[1]) {
         }
         break;
 
+    case "database:list":
+        if($databaseChecker->listTable())
+        {
+            $res = $databaseChecker->listTable();
+            for ($i = 0; $i < count($res); $i++)
+            {
+                if ($res[$i]['TABLE_NAME'] !== @$res[$i - 1]['TABLE_NAME'])
+                {
+                    echo "\033[1;34m" . "|" . $res[$i]['TABLE_NAME'] . "\n";
+                }
+                echo "\033[1;32m" . "    | " . $res[$i]['COLUMN_NAME'] . " ( " . $res[$i]['DATA_TYPE'] . " )\n";
+            }
+        }
+        else
+        {
+            echo "\033[0;31m"."La connexion a la base de donnee n'est pas possible \n";
+        }
+        break;
+
 
 # Le cas default pour gerer les options non reconnues
     default:
