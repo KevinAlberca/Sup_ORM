@@ -7,9 +7,6 @@
             "email": "kevin.alberca@supinternet.fr"
         }
     ],
-    "require": {
-        "symfony/yaml": "^3.0"
-    },
     "autoload": {
         "psr-4": { "": "src/" }
     }
