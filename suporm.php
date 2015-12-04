@@ -1,5 +1,7 @@
 <?php
 
+require_once("vendor/autoload.php");
+
 
 if(!isset($argv[1]) && empty($argv[1]))
 {
