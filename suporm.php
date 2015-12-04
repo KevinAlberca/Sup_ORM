@@ -22,16 +22,16 @@ switch($argv[1])
         {
             if($generator::createConfigFile($argv[2], $argv[3], $argv[4], $argv[5]))
             {
-                echo "Le fichier de configuration a bien été créé, il est disponible ici :\n".__DIR__."/config.json";
+                echo "\033[0;34m"."Le fichier de configuration a bien été créé, il est disponible ici :\n".__DIR__."/config.json";
             }
             else
             {
-                echo "Le fichier de configuration n'a pas pu être créer";
+                echo "\033[1;31m"."Le fichier de configuration n'a pas pu être créer";
             }
         }
         else
         {
-            echo "Pour generer un fichier de configuration, merci d'utiliser la commande suivante :\nphp suporm --config DATABASE_HOST DATABASE_NAME DATABASE_USER DATABASE_PASSWORD";
+            echo "\033[1;31m"."Pour generer un fichier de configuration, merci d'utiliser la commande suivante :\nphp suporm --config DATABASE_HOST DATABASE_NAME DATABASE_USER DATABASE_PASSWORD";
         }
         break;
 # Le cas default pour gerer les options non reconnues
@@ -40,5 +40,5 @@ switch($argv[1])
         break;
 }
 
-echo "\n";
+echo "\033[0;37m"."\n";
 
