@@ -25,7 +25,7 @@ class DatabaseChecker
         $this->user = $user;
         $this->password = $password;
 
-        $this->getConnexion();
+        $this->bdd = Connexion::getConnexion($dbhost, $dbname, $user, $password);
 
     }
 
@@ -47,19 +47,5 @@ class DatabaseChecker
         ]);
 
         return $req->fetch()['count'];
-    }
-
-    private function getConnexion()
-    {
-        $db = null;
-        try {
-            $db = new \PDO('mysql:host='.$this->host.";dbname=information_schema;charset=UTF8;", $this->user, $this->password, [
-                \PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION
-            ]);
-        } catch(\PDOException $e) {
-            return "ERROR :". $e->getMessage();
-        }
-
-        $this->bdd = $db;
     }
 }

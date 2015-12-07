@@ -5,7 +5,7 @@ require_once("vendor/autoload.php");
 
 # Declaration des objets qui vont nous servir
 $generator = new Core\Generator();
-$database = new Core\Database();
+$database = new Core\Database("127.0.0.1", "information_schema", "root", "root");
 $databaseChecker = new Core\DatabaseChecker("127.0.0.1", "test_orm", "root", "root");
 
 
@@ -49,6 +49,7 @@ switch($argv[1]) {
         }
         break;
 
+# Liste toutes les tables de la base de donnees + les donnees des tables
     case "database:list":
         if($databaseChecker->listTable())
         {
@@ -64,10 +65,9 @@ switch($argv[1]) {
         }
         else
         {
-            echo "\033[0;31m"."La connexion a la base de donnee n'est pas possible \n";
+            echo "\033[0;31m"."La connexion a la base de donnee n'est pas possible\n";
         }
         break;
-
 
 # Le cas default pour gerer les options non reconnues
     default:
