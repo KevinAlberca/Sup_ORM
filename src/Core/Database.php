@@ -34,7 +34,7 @@ class Database
         try {
             $this->getFields($name, $fields);
 
-            $query = "CREATE TABLE ".$name." (
+            $query = "CREATE TABLE ".strtolower(str_replace(' ', "_", $name))." (
           id int NOT NULL AUTO_INCREMENT,";
             foreach ($fields as $field => $f) {
                 $query .="\n".$f['name']." ".$f['type']." NOT NULL,\n";
@@ -46,6 +46,7 @@ class Database
 
             $req = $this->bdd->prepare($query);
             $req->execute();
+            Generator::createEntity($name, $fields);
             return true;
         } catch (\PDOException $e){
             return "ERROR ".$e->getMessage();

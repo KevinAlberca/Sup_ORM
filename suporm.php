@@ -94,7 +94,7 @@ switch($argv[1]) {
                 echo "\033[0;31m"."Merci d'utiliser la commande suivante\nphp suporm create:table NOM_DE_TABLE";
             }
         break;
-
+# Genere une table dans la base de donnee et genere une Entite
     case "delete:table":
             if(isset($argv[2]) && !empty($argv[2]))
             {
@@ -109,6 +109,7 @@ switch($argv[1]) {
                 echo "\033[0;31m"."Merci d'utiliser la commande suivante\nphp suporm delete:table NOM_DE_TABLE";
             }
         break;
+
 # Le cas default pour gerer les options non reconnues
     default:
         echo "Liste des actions";
