@@ -2,11 +2,20 @@
 
 require_once("vendor/autoload.php");
 
+$config = json_decode(file_get_contents(__DIR__."/config.json"));
 
 # Declaration des objets qui vont nous servir
 $generator = new Core\Generator();
-$database = new Core\Database("127.0.0.1", "information_schema", "root", "root");
-$databaseChecker = new Core\DatabaseChecker("127.0.0.1", "test_orm", "root", "root");
+if(isset($config) && !empty($config))
+{
+    $databaseChecker = new Core\DatabaseChecker($config->database_host, $config->database_name, $config->database_user, $config->database_password);
+    $database = new Core\Database($config->database_host, $config->database_name, $config->database_user, $config->database_password);
+}
+else
+{
+    $databaseChecker = new Core\DatabaseChecker("127.0.0.1", "test_orm", "root", "root");
+    $database = new Core\Database("127.0.0.1", "test_orm", "root", "root");
+}
 
 
 if(!isset($argv[1]) && empty($argv[1]))
@@ -32,15 +41,16 @@ switch($argv[1]) {
 
 # Retourne l'etat de la connexion a la base de donnee
     case "database:exist":
-        if (!empty($argv[2]) && isset($argv[2], $argv[3], $argv[4], $argv[5]))
+        if (isset($argv[2]) || !empty($config))
         {
-            if($databaseChecker->checkIfExist($argv[2], $argv[3], $argv[4], $argv[5]))
+            $dbname = $argv[2] = $config->database_name;
+            if($databaseChecker->checkIfExist($config->database_name) || $databaseChecker->checkIfExist($argv[2]) )
             {
-                echo "\033[0;34m" . "La base de donnée ".$argv[3]." est existante";
+                echo "\033[0;34m" . "La base de donnée ".$dbname." est existante";
             }
             else
             {
-                echo "\033[1;31m" . "La base de donnée ".$argv[3]." est inexistante";
+                echo "\033[1;31m" . "La base de donnée ".$dbname." est inexistante";
             }
         }
         else
@@ -69,6 +79,21 @@ switch($argv[1]) {
         }
         break;
 
+    case "create:table":
+            if(isset($argv[2]) && !empty($argv[2]))
+            {
+                $fields= [];
+                if($database->createTable($argv[2], $fields)){
+                    echo "\033[1;32m"."OK";
+                } else {
+                    echo "\033[0;31m"."ERROR 1";
+                }
+            }
+            else
+            {
+                echo "\033[0;31m"."Merci d'utiliser la commande suivante\nphp suporm create:table NOM_DE_TABLE";
+            }
+        break;
 # Le cas default pour gerer les options non reconnues
     default:
         echo "Liste des actions";
