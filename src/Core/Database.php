@@ -18,6 +18,17 @@ class Database
 
     }
 
+    public function deleteTable($dbname)
+    {
+        try{
+            $req = $this->bdd->prepare("DROP TABLE ".$dbname);
+            $req->execute();
+            return true;
+        } catch (\PDOException $e){
+            return "ERROR ".$e->getMessage();
+        }
+    }
+
     public function createTable($name, Array $fields)
     {
         try {
