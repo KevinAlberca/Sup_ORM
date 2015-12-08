@@ -39,11 +39,11 @@ class DatabaseChecker
         return $req->fetchAll();
     }
 
-    public function checkIfExist($host, $dbname, $dbuser, $dbpass)
+    public function checkIfExist($database)
     {
         $req = $this->bdd->prepare("SELECT COUNT(*) as 'count' FROM `information_schema`.`SCHEMATA` WHERE `SCHEMA_NAME` LIKE :db");
         $req->execute([
-            "db" => $dbname,
+            "db" => $database,
         ]);
 
         return $req->fetch()['count'];

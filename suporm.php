@@ -96,18 +96,18 @@ switch($argv[1]) {
         break;
 # Genere une table dans la base de donnee et genere une Entite
     case "delete:table":
-            if(isset($argv[2]) && !empty($argv[2]))
-            {
-                if($database->deleteTable($argv[2])){
-                    echo "\033[1;32m"."Successfull";
-                } else{
-                    echo ""."Error delete";
-                }
+        if(isset($argv[2]) && !empty($argv[2]))
+        {
+            if($database->deleteTable($argv[2])){
+                echo "\033[1;32m"."Successfull";
+            } else{
+                echo ""."Error delete";
             }
-            else
-            {
-                echo "\033[0;31m"."Merci d'utiliser la commande suivante\nphp suporm delete:table NOM_DE_TABLE";
-            }
+        }
+        else
+        {
+            echo "\033[0;31m"."Merci d'utiliser la commande suivante\nphp suporm delete:table NOM_DE_TABLE";
+        }
         break;
 
 # Le cas default pour gerer les options non reconnues
