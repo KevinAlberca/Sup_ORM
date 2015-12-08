@@ -23,6 +23,7 @@ class Database
         try{
             $req = $this->bdd->prepare("DROP TABLE ".$dbname);
             $req->execute();
+            $this->deleteModel($dbname);
             return true;
         } catch (\PDOException $e){
             return "ERROR ".$e->getMessage();
@@ -92,6 +93,18 @@ class Database
             return false;
         }
 
+    }
+
+    private function deleteModel($name)
+    {
+        if(unlink(__DIR__."/../../Model/".$name.".php"))
+        {
+            return true;
+        }
+        else
+        {
+            return true;
+        }
     }
 
 
