@@ -99,9 +99,9 @@ switch($argv[1]) {
         if(isset($argv[2]) && !empty($argv[2]))
         {
             if($database->deleteTable($argv[2])){
-                echo "\033[1;32m"."Successfull";
+                echo "\033[1;32m"."La Table a ete creee dans la base de donnee.\nL'Entity est disponible a cet endroit :\n".__DIR__."/Entity/".$argv[2].".php";
             } else{
-                echo ""."Error delete";
+                echo "\033[0:31m"."La supression de la table n'a pas pu etre faite.";
             }
         }
         else
@@ -112,7 +112,13 @@ switch($argv[1]) {
 
 # Le cas default pour gerer les options non reconnues
     default:
-        echo "Liste des actions";
+        echo "\033[1;35m"."Liste des actions".
+            "\n\033[1;34m"."x --config -> Creer le fichier de configuration".
+            "\n\033[1;36m"."x database:exist -> Verifie si la base de donnee est existante".
+            "\n\033[1;34m"."x database:list -> Liste les tables de la base de donnee".
+            "\n\033[1;36m"."x create:table -> Creer le fichier de configuration".
+            "\n\033[1;34m"."x --config -> Creer le fichier de configuration".
+            "\n\033[1;36m"."x delete:table -> Creer le fichier de configuration";
         break;
 }
 
