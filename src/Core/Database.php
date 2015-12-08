@@ -82,7 +82,7 @@ class Database
                     break;
             }
 
-            array_push($fields, ["name" => $name, "type" => $type]);
+            array_push($fields, ["name" => trim($name), "type" => trim($type)]);
             if($else == "Y" || $else == "y"){
                 $this->getFields($dbname, $fields);
                 return true;
@@ -97,7 +97,7 @@ class Database
 
     private function deleteModel($name)
     {
-        if(unlink(__DIR__."/../../Model/".$name.".php"))
+        if(unlink(__DIR__."/../../Entity/".$name.".php"))
         {
             return true;
         }

@@ -27,7 +27,7 @@ class Generator
     public static function createEntity($name, Array $fields)
     {
         $name = ucfirst(strtolower($name));
-        $entity = "<?php \n\nnamespace Model; \n\nclass ".$name." extends Test\\Coucou\n{\n";
+        $entity = "<?php \n\nnamespace Entity; \n\nclass ".$name."\n{\n";
         foreach ($fields as $field => $f)
         {
             $f['name'] = str_replace(" ", "_", $f['name']);
@@ -45,7 +45,7 @@ class Generator
         $entity .= "\n}";
 
 
-        file_put_contents(__DIR__."/../../Model/".$name.".php", $entity);
+        file_put_contents(__DIR__."/../../Entity/".$name.".php", $entity);
 
     }
 }
