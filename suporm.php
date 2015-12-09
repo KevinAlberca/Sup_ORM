@@ -41,7 +41,7 @@ switch($argv[1]) {
 
 # Retourne l'etat de la connexion a la base de donnee
     case "database:exist":
-        if (isset($argv[2]) || !empty($config))
+        if (!empty($config))
         {
             $dbname = $argv[2] = $config->database_name;
             if($databaseChecker->checkIfExist($config->database_name) || $databaseChecker->checkIfExist($argv[2]) )
@@ -80,11 +80,11 @@ switch($argv[1]) {
         break;
 
     case "create:table":
-            if(isset($argv[2]) && !empty($argv[2]))
+            if(!empty($argv[2]))
             {
                 $fields= [];
                 if($database->createTable($argv[2], $fields)){
-                    echo "\033[1;32m"."OK";
+                    echo "\033[1;32m"."La Table a ete creee dans la base de donnee.\nL'Entity est disponible a cet endroit :\n".__DIR__."/Entity/".$argv[2].".php";
                 } else {
                     echo "\033[0;31m"."ERROR 1";
                 }
@@ -96,10 +96,10 @@ switch($argv[1]) {
         break;
 # Genere une table dans la base de donnee et genere une Entite
     case "delete:table":
-        if(isset($argv[2]) && !empty($argv[2]))
+        if(!empty($argv[2]))
         {
             if($database->deleteTable($argv[2])){
-                echo "\033[1;32m"."La Table a ete creee dans la base de donnee.\nL'Entity est disponible a cet endroit :\n".__DIR__."/Entity/".$argv[2].".php";
+                echo "\033[1;32m"."La suppression de la table a bien ete realisee.";
             } else{
                 echo "\033[0:31m"."La supression de la table n'a pas pu etre faite.";
             }
@@ -113,11 +113,11 @@ switch($argv[1]) {
 # Le cas default pour gerer les options non reconnues
     default:
         echo "\033[1;35m"."Liste des actions".
-            "\n\033[1;34m"."x --config -> Creer le fichier de configuration".
+            "\n\033[0;34m"."x --config -> Creer le fichier de configuration".
             "\n\033[1;36m"."x database:exist -> Verifie si la base de donnee est existante".
-            "\n\033[1;34m"."x database:list -> Liste les tables de la base de donnee".
+            "\n\033[0;36m"."x database:list -> Liste les tables de la base de donnee".
             "\n\033[1;36m"."x create:table -> Creer le fichier de configuration".
-            "\n\033[1;34m"."x --config -> Creer le fichier de configuration".
+            "\n\033[0;36m"."x --config -> Creer le fichier de configuration".
             "\n\033[1;36m"."x delete:table -> Creer le fichier de configuration";
         break;
 }
