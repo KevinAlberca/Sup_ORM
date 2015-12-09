@@ -26,7 +26,7 @@ class Connexion
         }
 
         self::$db = $database;
-        return $database;
+        return self::$db;
     }
 
 }

@@ -29,11 +29,22 @@ class DatabaseChecker
 
     }
 
-    public function listTable()
+    public function listAllTables()
     {
         $req = $this->bdd->prepare("SELECT TABLE_NAME, COLUMN_NAME, DATA_TYPE FROM `information_schema`.`COLUMNS` WHERE TABLE_SCHEMA LIKE :db ");
         $req->execute([
             "db" => $this->dbname,
+        ]);
+
+        return $req->fetchAll();
+    }
+
+    public function listThisTable($dbhost, $dbname, $dbuser, $dbpass, $tablename)
+    {
+        $req = $this->bdd->prepare("SELECT TABLE_NAME, COLUMN_NAME, DATA_TYPE FROM `information_schema`.`COLUMNS` WHERE TABLE_SCHEMA LIKE :db AND TABLE_NAME LIKE :table");
+        $req->execute([
+           "db" => $this->dbname,
+            "table" => $tablename
         ]);
 
         return $req->fetchAll();
