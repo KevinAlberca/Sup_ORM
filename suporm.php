@@ -5,7 +5,6 @@ require_once("vendor/autoload.php");
 $config = json_decode(file_get_contents(__DIR__."/config.json"));
 
 # Declaration des objets qui vont nous servir
-$generator = new Core\Generator();
 if(isset($config) && !empty($config))
 {
     $databaseChecker = new Core\DatabaseChecker($config->database_host, $config->database_name, $config->database_user, $config->database_password);
@@ -29,7 +28,7 @@ switch($argv[1]) {
 # Generer un ficher de configuration
     case "--config":
         if (!empty($argv[2]) && isset($argv[2], $argv[3], $argv[4], $argv[5])) {
-            if ($generator::createConfigFile($argv[2], $argv[3], $argv[4], $argv[5])) {
+            if (\Core\Generator::createConfigFile($argv[2], $argv[3], $argv[4], $argv[5])) {
                 echo "\033[0;34m" . "Le fichier de configuration a bien été créé, il est disponible ici :\n" . __DIR__ . "/config.json";
             } else {
                 echo "\033[1;31m" . "Le fichier de configuration n'a pas pu être créer";
@@ -108,6 +107,38 @@ switch($argv[1]) {
         {
             echo "\033[0;31m"."Merci d'utiliser la commande suivante\nphp suporm delete:table NOM_DE_TABLE";
         }
+        break;
+###################
+#    Generator    #
+###################
+
+# Genere la classe Entity sans obligatoirement creer une table
+    case "generate:entity":
+        if(!empty($config) || !empty($argv[2] && $argv[3] && $argv[4] && $argv[5] && $argv[6]))
+        {
+            var_dump($argv);
+        $data = [];
+            foreach($databaseChecker->listThisTable($argv[2], $argv[3], $argv[4], $argv[5], $argv[6]) as $database => $table){
+                $data[] = [
+                    'name' => $table['COLUMN_NAME'],
+                    'type' => $table['DATA_TYPE'],
+                ];
+            }
+
+            if(\Core\Generator::createEntity($argv[6], $data))
+            {
+                echo "successfull";
+            }
+            else
+            {
+                echo "ERROR ! ";
+            }
+        }
+        else
+        {
+            echo "\033[0;31m"."ERROR";
+        }
+
         break;
 
 # Le cas default pour gerer les options non reconnues
