@@ -8,7 +8,6 @@
 
 namespace Core;
 
-
 class Connexion
 {
 
@@ -22,7 +21,8 @@ class Connexion
                 \PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION
             ]);
         } catch(\PDOException $e) {
-            return "ERROR :". $e->getMessage();
+            file_put_contents(__DIR__."/../../error.log", "[".\date("d-m-Y H:i:s")."]".$e->getCode()." : ".$e->getMessage()."\n", FILE_APPEND);
+            return false;
         }
 
         self::$db = $database;

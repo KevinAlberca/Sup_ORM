@@ -13,28 +13,11 @@ use Core\Connexion;
 
 class Builder
 {
-    public $table;
-    public $clause;
-    public $data = [];
-    public $query;
-
     private $bdd;
 
     public function __construct()
     {
         $this->bdd = Connexion::getConnexion("127.0.0.1", "test_orm", "root","root");
-    }
-
-    public function table($table)
-    {
-        $this->table = strtolower($table);
-        return $this;
-    }
-
-    public function clause($clause)
-    {
-        $this->clause = $clause;
-        return $this;
     }
 
     public function getAll($table)
@@ -45,26 +28,18 @@ class Builder
         return $req->fetchAll();
     }
 
-    public function get($tableName,Array $options, $clause = null)
+    public function insertData($datas)
     {
-        $i = 0;
-        $len = count($options);
-        $this->query = "SELECT ";
-        foreach ($options as $option) {
-            if($i == $len - 1){
-                $this->query .= $option." ";
-            } else {
-                $this->query .= $option.", ";
-            }
-            $i++;
-        }
-       $this->query .= " FROM ".$tableName.";";
+        $query = $this->getInsertQuery($datas);
 
-        return $this;
+     var_dump($query);
 
+
+        $req = $this->bdd->prepare($query);
+        return $req->execute();
     }
 
-    public function insert($datas)
+    private function getInsertQuery($datas)
     {
         $className = get_class($datas);
         $tableName = explode("\\", get_class($datas))[1];
