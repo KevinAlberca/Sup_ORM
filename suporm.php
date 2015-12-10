@@ -60,9 +60,9 @@ switch($argv[1]) {
 
 # Liste toutes les tables de la base de donnees + les donnees des tables
     case "database:list":
-        if($databaseChecker->listTable())
+        if($databaseChecker->listAllTables())
         {
-            $res = $databaseChecker->listTable();
+            $res = $databaseChecker->listAllTables();
             for ($i = 0; $i < count($res); $i++)
             {
                 if ($res[$i]['TABLE_NAME'] !== @$res[$i - 1]['TABLE_NAME'])
@@ -85,7 +85,7 @@ switch($argv[1]) {
                 if($database->createTable($argv[2], $fields)){
                     echo "\033[1;32m"."La Table a ete creee dans la base de donnee.\nL'Entity est disponible a cet endroit :\n".__DIR__."/Entity/".$argv[2].".php";
                 } else {
-                    echo "\033[0;31m"."ERROR 1";
+                    echo "\033[0;31m"."La table n'a pas pu etre creee";
                 }
             }
             else
@@ -116,8 +116,7 @@ switch($argv[1]) {
     case "generate:entity":
         if(!empty($config) || !empty($argv[2] && $argv[3] && $argv[4] && $argv[5] && $argv[6]))
         {
-            var_dump($argv);
-        $data = [];
+            $data = [];
             foreach($databaseChecker->listThisTable($argv[2], $argv[3], $argv[4], $argv[5], $argv[6]) as $database => $table){
                 $data[] = [
                     'name' => $table['COLUMN_NAME'],
@@ -127,16 +126,16 @@ switch($argv[1]) {
 
             if(\Core\Generator::createEntity($argv[6], $data))
             {
-                echo "successfull";
+                echo "\033[1;32m"."L'entitee a bien ete generee";
             }
             else
             {
-                echo "ERROR ! ";
+                echo "\033[0;31m"."L'entitee n'a pas pu etre generee ! ";
             }
         }
         else
         {
-            echo "\033[0;31m"."ERROR";
+            echo "\033[0;31m"."Merci d'utiliser la commande suivante :\nphp suporm.php generate:entity DATABASE_HOST DATABASE_NAME DATABASE_USER DATABASE_PASSWORD TABLE_NAME";
         }
 
         break;
