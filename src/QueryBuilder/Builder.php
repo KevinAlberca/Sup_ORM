@@ -20,92 +20,32 @@ class Builder
         $req->execute();
         return $req->fetchAll();
     }
+
+    public function selectData($datas, $clauses)
+    {
+        return $this->queryGenerator("SELECT", $datas, $clauses);
+    }
+
     public function insertData($datas)
     {
-        $query = $this->getInsertQuery($datas);
+        $query = $this->queryGenerator("INSERT", $datas, []);
         $req = $this->bdd->prepare($query);
-        return $req->execute();
+//        return $req->execute();
+        return $query;
     }
     public function updateData($datas,Array $clauses)
     {
-        $query = $this->getUpdateQuery($datas, $clauses);
+        $query = $this->queryGenerator("UPDATE", $datas, $clauses);
         $req = $this->bdd->prepare($query);
         return $req->execute();
     }
     public function deleteData($datas, Array $clauses)
     {
-        $query = $this->getDeleteQuery($datas, $clauses);
+        $query = $this->queryGenerator("DELETE", $datas, $clauses);
         $req = $this->bdd->prepare($query);
         return $req->execute();
     }
-    private function getInsertQuery($datas)
-    {
-        $className = $this->getClass($datas);
-        $tableName = explode("\\", get_class($datas))[1];
-        $element = get_class_vars($className);
-        $query = "INSERT INTO ".$tableName." (";
-        $tableElement = $this->getTableElements($element);
-        $i = 0;
-        $elemLength = count($tableElement);
-        foreach ($tableElement as $elements => $elem)
-        {
-            if($i == $elemLength-1) {
-                $query .= "`" . $elem . "` ";
-            }else{
-                $query .= "`" . $elem . "`, ";
-            }
-            $i++;
-        }
-        $query .= " ) VALUES (";
-        $i = 0;
-        $dataLength = count($element);
-        foreach ($datas as $data => $d) {
-            if($i == $dataLength-1){
-                $query .= "\"".$d."\" ";
-            }
-            else {
-                $query .= "\"".$d."\", ";
-            }
-            $i++;
-        }
-        $query .= ");";
-        return $query;
-    }
-    private function getUpdateQuery($datas, $clauses)
-    {
-        $className = $this->getClass($datas);
-        $datas = get_object_vars($datas);
-        $tableName = explode('\\', $className)[1];
-        $query = "UPDATE ".$tableName." SET ";
-        $i = 0;
-        $elemLength = count($datas);
-        foreach ($datas as $data => $d)
-        {
-            if($i == $elemLength -1) {
-                $query .= "`" . $data . "` = \"".$d."\"  ";
-            }else{
-                $query .= "`" . $data . "` = \"".$d."\", ";
-            }
-            $i++;
-        }
-        if(!empty($clauses))
-        {
-            foreach ($clauses as $clause => $c) {
-                $query .= $clause." ".$c;
-            }
-        }
-        return $query;
-    }
-    private function getDeleteQuery($datas, $clauses)
-    {
-        $className = $this->getClass($datas);
-        $tableName = explode("\\", get_class($datas))[1];
-        $query = "DELETE FROM ".$tableName." ";
-        foreach ($clauses as $clause => $c) {
-            $query .= $clause." ".$c;
-        }
-        return $query;
-    }
+
     protected function getTableElements($datas)
     {
         $var = [];
@@ -115,8 +55,72 @@ class Builder
         }
         return $var;
     }
+
     private function getClass($class)
     {
         return $className = get_class($class);
+    }
+
+
+
+    public function queryGenerator($type, $datas, $clauses)
+    {
+        $className = $this->getClass($datas);
+        $tableName = explode("\\", get_class($datas))[1];
+        $element = get_class_vars($className);
+
+        switch($type)
+        {
+            case "SELECT":
+                break;
+            case "INSERT":
+                $query = "INSERT INTO ".$tableName." (";
+                $tableElement = $this->getTableElements($element);
+                $i = 0;
+                $elemLength = count($tableElement);
+                foreach ($tableElement as $elements => $elem)
+                {
+                    $query .= ($i == $elemLength-1) ? "`" . $elem . "`" : "`" . $elem . "`,";
+                    $i++;
+                }
+                $query .= " ) VALUES (";
+                $i = 0;
+                $dataLength = count($element);
+                foreach ($datas as $data => $d) {
+                    $query .= ($i == $dataLength-1) ? "\"".$d."\" " : "\"".$d."\", ";
+                    $i++;
+                }
+                $query .= ");";
+                return $query;
+                break;
+            case "UPDATE":
+                $query = "UPDATE ".$tableName." SET ";
+                $i = 0;
+                $elemLength = count($datas);
+                foreach ($datas as $data => $d)
+                {
+                    $query .= ($i == $elemLength-1) ? "`" . $data . "`" : "`" . $data . "`,";
+                    $i++;
+                }
+                if(!empty($clauses))
+                {
+                    foreach ($clauses as $clause => $c) {
+                        $query .= $clause." ".$c;
+                    }
+                }
+                return $query;
+                break;
+            case "DELETE":
+                $query = "DELETE FROM ".$tableName." ";
+                foreach ($clauses as $clause => $c)
+                {
+                    $query .= $clause." ".$c;
+                }
+                return $query;
+                break;
+            default:
+                return "ERROR";
+                break;
+        }
     }
 }

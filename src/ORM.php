@@ -12,6 +12,10 @@ use QueryBuilder\Builder;
 
 class ORM extends Builder
 {
+    public function select($datas, $clauses){
+        return $this->selectData($datas, $clauses);
+    }
+
     public function save($data)
     {
         return $this->insertData($data);
