@@ -19,14 +19,19 @@ class ORM extends Builder
         $this->data = $b->getAll($tableName);
         return $this;
     }
+    public function save($data)
+    {
+        return $this->insertData($data);
+    }
 
     public function update($data, $clause)
     {
         return $this->updateData($data, $clause);
     }
 
-    public function save($data)
+    public function delete($data, $clause)
     {
-        return $this->insertData($data);
+        return $this->deleteData($data, $clause);
     }
+
 }

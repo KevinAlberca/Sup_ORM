@@ -36,7 +36,14 @@ class Builder
 
     public function updateData($datas,Array $clauses)
     {
-       $query = $this->getUpdateQuery($datas, $clauses);
+        $query = $this->getUpdateQuery($datas, $clauses);
+        $req = $this->bdd->prepare($query);
+        return $req->execute();
+    }
+
+    public function deleteData($datas, Array $clauses)
+    {
+        $query = $this->getDeleteQuery($datas, $clauses);
         $req = $this->bdd->prepare($query);
         return $req->execute();
     }
@@ -104,6 +111,19 @@ class Builder
             foreach ($clauses as $clause => $c) {
                 $query .= $clause." ".$c;
             }
+        }
+
+        return $query;
+    }
+
+    private function getDeleteQuery($datas, $clauses)
+    {
+        $className = $this->getClass($datas);
+        $tableName = explode("\\", get_class($datas))[1];
+        $query = "DELETE FROM ".$tableName." ";
+
+        foreach ($clauses as $clause => $c) {
+            $query .= $clause." ".$c;
         }
 
         return $query;
