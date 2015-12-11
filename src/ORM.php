@@ -20,9 +20,9 @@ class ORM extends Builder
         return $this;
     }
 
-    public function update($data, Array $clause)
+    public function update($data, $clause)
     {
-        return $this->update($data, $clause);
+        return $this->updateData($data, $clause);
     }
 
     public function save($data)
