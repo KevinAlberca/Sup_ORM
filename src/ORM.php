@@ -27,7 +27,7 @@ class ORM extends Builder
         return $this->updateData($data, $clause);
     }
 
-    public function delete($data, $clause)
+    public function delete($data, Array $clause)
     {
         return $this->deleteData($data, $clause);
     }

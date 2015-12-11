@@ -39,15 +39,16 @@ class Builder
         $query = $this->queryGenerator("UPDATE", $datas, $clauses);
         $datas = get_object_vars($datas);
         $req = $this->bdd->prepare($query);
-//     return $query;
         return $req->execute($datas);
     }
+
     public function deleteData($datas, Array $clauses)
     {
         $query = $this->queryGenerator("DELETE", $datas, $clauses);
         $datas = get_object_vars($datas);
         $req = $this->bdd->prepare($query);
-        return $req->execute($datas);
+
+        return $req->execute();
     }
 
     protected function getTableElements($datas)
@@ -111,15 +112,15 @@ class Builder
                     foreach ($clauses as $clause => $c)
                     {
                         $query .= " ".$clause." ".$c;
+                        $i++;
                     }
                 }
                 return $query;
                 break;
             case "DELETE":
                 $query = "DELETE FROM ".$tableName." ";
-                foreach ($clauses as $clause => $c)
-                {
-                    $query .= $clause." ".$c;
+                foreach ($clauses as $clause => $c) {
+                    $query .= " ".$clause." ".$c;
                 }
                 return $query;
                 break;
