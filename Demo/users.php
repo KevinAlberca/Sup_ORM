@@ -29,10 +29,13 @@ $user->setName("Baptou") // On lui mets un Nom
 //    echo "ERROR"; // Sinon, on retourne une erreur
 //}
 $data = [
-  "WHERE" => "id = 1",
+  "WHERE" => "email = 'medrup@loscil.fr'",
 ];
-if($ORM->update($user, $data)){
-    echo "UPDATED";
-} else {
-    echo "ERROR";
-}
+//if($ORM->update($user, $data)){
+//    echo "UPDATED";
+//} else {
+//    echo "ERROR";
+//}
+$users = new \Entity\Users();
+
+var_dump($ORM->delete($users, $data));
