@@ -8,7 +8,6 @@
 
 namespace QueryBuilder;
 
-
 use Core\Connexion;
 
 class Builder
@@ -31,12 +30,14 @@ class Builder
     public function insertData($datas)
     {
         $query = $this->getInsertQuery($datas);
-
-     var_dump($query);
-
-
         $req = $this->bdd->prepare($query);
         return $req->execute();
+    }
+
+    public function updateData($data, $clause)
+    {
+        var_dump($data, $clause);
+        return true;
     }
 
     private function getInsertQuery($datas)
@@ -77,7 +78,7 @@ class Builder
         return $query;
     }
 
-    private function getTableElements($datas)
+    protected function getTableElements($datas)
     {
         $var = [];
         foreach ($datas as $data => $d)
