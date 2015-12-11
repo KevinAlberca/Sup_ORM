@@ -37,14 +37,17 @@ class Builder
     public function updateData($datas,Array $clauses)
     {
         $query = $this->queryGenerator("UPDATE", $datas, $clauses);
+        $datas = get_object_vars($datas);
         $req = $this->bdd->prepare($query);
-        return $req->execute();
+//     return $query;
+        return $req->execute($datas);
     }
     public function deleteData($datas, Array $clauses)
     {
         $query = $this->queryGenerator("DELETE", $datas, $clauses);
+        $datas = get_object_vars($datas);
         $req = $this->bdd->prepare($query);
-        return $req->execute();
+        return $req->execute($datas);
     }
 
     protected function getTableElements($datas)
@@ -100,14 +103,14 @@ class Builder
                 $elemLength = count($datas);
                 foreach ($datas as $data => $d)
                 {
-                    $query .= ($i == $elemLength-1) ? "`" . $data . "`" : "`" . $data . "`,";
+                    $query .= ($i == $elemLength-1) ? "`" . $data . "` = :".$data." " : ",`".$data."` = :".$data."";
                     $i++;
                 }
                 if(!empty($clauses))
                 {
                     foreach ($clauses as $clause => $c)
                     {
-                        $query .= $clause." ".$c;
+                        $query .= " ".$clause." ".$c;
                     }
                 }
                 return $query;

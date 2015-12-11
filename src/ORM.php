@@ -12,7 +12,8 @@ use QueryBuilder\Builder;
 
 class ORM extends Builder
 {
-    public function select($datas, $clauses){
+    public function select($datas, $clauses)
+    {
         return $this->selectData($datas, $clauses);
     }
 
@@ -21,7 +22,7 @@ class ORM extends Builder
         return $this->insertData($data);
     }
 
-    public function update($data, Array $clause)
+    public function update($data, $clause)
     {
         return $this->updateData($data, $clause);
     }
