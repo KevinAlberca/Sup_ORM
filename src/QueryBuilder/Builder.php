@@ -29,10 +29,11 @@ class Builder
     public function insertData($datas)
     {
         $query = $this->queryGenerator("INSERT", $datas, []);
+        $datas = get_object_vars($datas);
         $req = $this->bdd->prepare($query);
-//        return $req->execute();
-        return $query;
+        return $req->execute($datas);
     }
+
     public function updateData($datas,Array $clauses)
     {
         $query = $this->queryGenerator("UPDATE", $datas, $clauses);
@@ -63,7 +64,7 @@ class Builder
 
 
 
-    public function queryGenerator($type, $datas, $clauses)
+    public function queryGenerator($type, $datas, Array $clauses)
     {
         $className = $this->getClass($datas);
         $tableName = explode("\\", get_class($datas))[1];
@@ -87,7 +88,7 @@ class Builder
                 $i = 0;
                 $dataLength = count($element);
                 foreach ($datas as $data => $d) {
-                    $query .= ($i == $dataLength-1) ? "\"".$d."\" " : "\"".$d."\", ";
+                    $query .= ($i == $dataLength-1) ? ":".$data : ":".$data.", ";
                     $i++;
                 }
                 $query .= ");";
@@ -104,7 +105,8 @@ class Builder
                 }
                 if(!empty($clauses))
                 {
-                    foreach ($clauses as $clause => $c) {
+                    foreach ($clauses as $clause => $c)
+                    {
                         $query .= $clause." ".$c;
                     }
                 }
