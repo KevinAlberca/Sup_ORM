@@ -12,13 +12,11 @@ use QueryBuilder\Builder;
 
 class ORM extends Builder
 {
-
-    public function getTable($tableName)
+    public function select($datas, $clauses)
     {
-        $b = new QueryBuilder\Builder();
-        $this->data = $b->getAll($tableName);
-        return $this;
+        return $this->selectData($datas, $clauses);
     }
+
     public function save($data)
     {
         return $this->insertData($data);
@@ -29,9 +27,8 @@ class ORM extends Builder
         return $this->updateData($data, $clause);
     }
 
-    public function delete($data, $clause)
+    public function delete($data, Array $clause)
     {
         return $this->deleteData($data, $clause);
     }
-
 }
