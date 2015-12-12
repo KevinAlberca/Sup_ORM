@@ -15,11 +15,20 @@ class Builder
     {
         $this->bdd = Connexion::getConnexion("127.0.0.1", "test_orm", "root","root");
     }
-    public function getAll($table)
+
+    protected function getAll($entity)
     {
+        $table = explode("\\", get_class($entity))[1];
         $req = $this->bdd->prepare("SELECT * FROM ".$table);
         $req->execute();
-        return $req->fetchAll();
+
+        $object = new $entity();
+
+        foreach ($req->fetchAll() as $item => $iValue)
+        {
+            $object->$item = $iValue;
+        }
+        return $object;
     }
 
     protected function selectData($datas, $clauses)
@@ -66,7 +75,7 @@ class Builder
         return $className = get_class($class);
     }
 
-    public function queryGenerator($type, $datas, Array $clauses)
+    private function queryGenerator($type, $datas, Array $clauses)
     {
         $className = $this->getClass($datas);
         $tableName = explode("\\", get_class($datas))[1];
