@@ -5,6 +5,10 @@
  * Date: 09/12/15
  * Time: 19:01
  */
+
+error_reporting(E_ALL);
+
+
 require_once __DIR__."/../vendor/autoload.php";
 
 $ORM = new ORM(); // Declaration de l'ORM
