@@ -44,8 +44,6 @@ class Builder
         $query = $this->queryGenerator("INSERT", $datas, []);
         $datas = get_object_vars($datas);
         $req = $this->bdd->prepareQuery($query);
-	var_dump($query);
-	var_dump($datas);
         return $req->execute($datas);
     }
 
