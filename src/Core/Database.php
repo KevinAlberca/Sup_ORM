@@ -15,11 +15,6 @@ class Database
         ]);
     }
 
-    public function hydrate(Object $object)
-    {
-
-    }
-
     public function deleteTable($dbname)
     {
         try{
@@ -59,9 +54,9 @@ class Database
     }
 
     public function getFields($dbname, &$fields){
-        $name = readline("Nom du champs : ");
-        $type = readline("Type du champs [int, string, date, datetime, bool] : ");
-        $else = readline("Souhaitez-vous ajouter un champs ? [y/N]");
+        $name = \readline("Nom du champs : ");
+        $type = \readline("Type du champs [int, string, date, datetime, bool] : ");
+        $else = \readline("Souhaitez-vous ajouter un champs ? [y/N]");
 
         if(isset($name, $type) && !empty($name) && !empty($type)){
 
