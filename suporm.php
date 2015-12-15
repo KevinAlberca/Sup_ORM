@@ -2,7 +2,14 @@
 
 require_once("vendor/autoload.php");
 
-$config = json_decode(file_get_contents(__DIR__."/config.json"));
+if(file_exists(__DIR__."/config.json"))
+{
+    $config = json_decode(file_get_contents(__DIR__."/config.json"));
+}
+else
+{
+    echo "Merci de preciser a chaque commande vos identifiants a la base de donnees\nphp suporm.php {{ACTION}} DBHOST DBNAME DBUSER DBPASS\n";
+}
 
 # Declaration des objets qui vont nous servir
 if(isset($config) && !empty($config))
@@ -12,8 +19,8 @@ if(isset($config) && !empty($config))
 }
 else
 {
-    $databaseChecker = new Core\DatabaseChecker("127.0.0.1", "test_orm", "root", "root");
-    $database = new Core\Database("127.0.0.1", "test_orm", "root", "root");
+    @$databaseChecker = new Core\DatabaseChecker($argv[2], $argv[3], $argv[4], $argv[5]);
+    @$database = new Core\Database($argv[2], $argv[3], $argv[4], $argv[5]);
 }
 
 
