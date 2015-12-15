@@ -8,9 +8,9 @@ class Database
     private $fields;
     private $bdd;
 
-    public function __construct($dbhost, $dbname, $dbuser, $dbpass)
+    public function __construct($dbhost, $dbname, $user, $password)
     {
-        $this->bdd = new \Core\AwHPDO('mysql:host='.$dbhost.';dbname='.$dbname.';charset=utf-8', $dbuser, $dbpass, [
+        $this->bdd = new \Core\AwHPDO('mysql:host='.$dbhost.';dbname='.$dbname, $user, $password, [
             \PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION
         ]);
     }

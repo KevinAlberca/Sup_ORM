@@ -13,8 +13,6 @@ class AwHPDO extends \PDO {
 
     public function prepareQuery($statement) {
         $sth = $this->prepare($statement);
-        if ($sth->errorInfo()[2] != null) $this->logError($sth);
-        $sth->execute();
         if ($sth->errorInfo()[2] != null) {
             $this->logError($sth);
         } else {

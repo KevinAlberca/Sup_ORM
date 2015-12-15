@@ -8,6 +8,8 @@
 
 namespace Core;
 
+use \Core\AwHPDO;
+
 
 class DatabaseChecker
 {
@@ -25,7 +27,8 @@ class DatabaseChecker
         $this->user = $user;
         $this->password = $password;
 
-        $this->bdd = new \Core\AwHPDO('mysql:host='.$dbhost.';dbname='.$dbname.';charset=utf-8', $user, $password,[
+
+        $this->bdd = new \Core\AwHPDO('mysql:host='.$dbhost.';dbname='.$dbname, $user, $password, [
             \PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION
         ]);
 
