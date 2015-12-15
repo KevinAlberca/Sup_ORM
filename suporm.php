@@ -121,7 +121,7 @@ switch($argv[1]) {
 
 # Genere la classe Entity sans obligatoirement creer une table
     case "generate:entity":
-        if(!empty($config) || !empty($argv[2] && $argv[3] && $argv[4] && $argv[5] && $argv[6]))
+        if(!empty($config) || !empty($argv[6]))
         {
             $data = [];
             foreach($databaseChecker->listThisTable($argv[2], $argv[3], $argv[4], $argv[5], $argv[6]) as $database => $table){
