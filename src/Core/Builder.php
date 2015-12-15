@@ -35,7 +35,7 @@ class Builder
     {
         $query = $this->queryGenerator("SELECT", $datas, $clauses);
         $req = $this->bdd->prepareQuery($query);
-        $req->execute();
+	$req->execute();
         return $req->fetchAll();
     }
 
@@ -44,6 +44,8 @@ class Builder
         $query = $this->queryGenerator("INSERT", $datas, []);
         $datas = get_object_vars($datas);
         $req = $this->bdd->prepareQuery($query);
+	var_dump($query);
+	var_dump($datas);
         return $req->execute($datas);
     }
 
@@ -81,7 +83,7 @@ class Builder
     private function queryGenerator($type, $datas, Array $clauses)
     {
         $className = $this->getClass($datas);
-        $tableName = explode("\\", get_class($datas))[1];
+        $tableName = strtolower(explode("\\", get_class($datas))[1]);
         $element = get_class_vars($className);
 
         switch($type)
