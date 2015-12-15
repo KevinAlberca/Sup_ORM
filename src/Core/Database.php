@@ -8,9 +8,11 @@ class Database
     private $fields;
     private $bdd;
 
-    public function __construct($host, $dbname, $dbuser, $dbpass)
+    public function __construct($dbhost, $dbname, $dbuser, $dbpass)
     {
-        $this->bdd = Connexion::getConnexion($host, $dbname, $dbuser, $dbpass);
+        $this->bdd = new \Core\AwHPDO('mysql:host='.$dbhost.';dbname='.$dbname.';charset=utf-8', $dbuser, $dbpass, [
+            \PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION
+        ]);
     }
 
     public function hydrate(Object $object)
@@ -21,7 +23,7 @@ class Database
     public function deleteTable($dbname)
     {
         try{
-            $req = $this->bdd->prepare("DROP TABLE ".$dbname);
+            $req = $this->bdd->prepareQuery("DROP TABLE ".$dbname);
             $req->execute();
             $this->deleteModel($dbname);
             return true;
@@ -32,25 +34,27 @@ class Database
 
     public function createTable($name, Array $fields)
     {
-        try {
-            $this->getFields($name, $fields);
+        $this->getFields($name, $fields);
 
-            $query = "CREATE TABLE ".strtolower(str_replace(' ', "_", $name))." (
-          id int NOT NULL AUTO_INCREMENT,";
-            foreach ($fields as $field => $f) {
-                $query .="\n".$f['name']." ".$f['type']." NOT NULL,\n";
-            }
+        $query = "CREATE TABLE ".strtolower(str_replace(' ', "_", $name))." (
+        id int NOT NULL AUTO_INCREMENT,";
+        foreach ($fields as $field => $f) {
+            $query .="\n".$f['name']." ".$f['type']." NOT NULL,\n";
+        }
 
-            $query .= "PRIMARY KEY `id`(`id`)
+        $query .= "PRIMARY KEY `id`(`id`)
         ) ENGINE = INNODB DEFAULT CHARSET = utf8;";
 
 
-            $req = $this->bdd->prepare($query);
-            $req->execute();
+        $req = $this->bdd->prepareQuery($query);
+        if($req->execute())
+        {
             Generator::createEntity($name, $fields);
             return true;
-        } catch (\PDOException $e){
-            return "ERROR ".$e->getMessage();
+        }
+        else
+        {
+            return false;
         }
     }
 

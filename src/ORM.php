@@ -7,11 +7,16 @@
  * Time: 18:54
  */
 
-use QueryBuilder\Builder;
+use Core\Builder;
 
 
 class ORM extends Builder
 {
+    public function getAll($entity)
+    {
+        return $this->hydrateEntity($entity);
+    }
+
     public function select($datas, $clauses)
     {
         return $this->selectData($datas, $clauses);

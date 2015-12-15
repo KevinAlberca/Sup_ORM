@@ -17,15 +17,18 @@ class Connexion
     {
         $database = null;
         try {
-            $database = new \PDO('mysql:host='.$host.";dbname=".$dbname.";charset=UTF8;", $user, $password, [
+            $database = new \Core\AwHPDO('mysql:host='.$host.";dbname=".$dbname.";charset=UTF8;", $user, $password, [
                 \PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION
             ]);
         } catch(\PDOException $e) {
-            file_put_contents(__DIR__."/../../error.log", "[".\date("d-m-Y H:i:s")."]".$e->getCode()." : ".$e->getMessage()."\n", FILE_APPEND);
-            return false;
+            return $e->getMessage();
         }
 
         self::$db = $database;
+    }
+
+    public function __construct()
+    {
         return self::$db;
     }
 

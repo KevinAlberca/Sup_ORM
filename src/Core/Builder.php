@@ -5,42 +5,45 @@
  * Date: 09/12/15
  * Time: 11:54
  */
-namespace QueryBuilder;
-use Core\Connexion;
+namespace Core;
+
+use \Core\Connexion;
+use Core\AwHPDO;
+
 class Builder
 {
     private $bdd;
 
     public function __construct()
     {
-        $this->bdd = Connexion::getConnexion("127.0.0.1", "test_orm", "root","root");
+        $this->bdd = new \Core\AwHPDO('mysql:host=127.0.0.1;dbname=test_orm', 'root', 'root', [
+            \PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION
+        ]);
     }
 
-    protected function getAll($entity)
+    public function hydrateEntity($entity)
     {
-        $table = explode("\\", get_class($entity))[1];
-        $req = $this->bdd->prepare("SELECT * FROM ".$table);
+        $tableName = get_class($entity);
+        $tableName = explode("\\", $tableName)[1];
+        $query = "SELECT * FROM ".$tableName;
+        $req = $this->bdd->prepareQuery($query);
         $req->execute();
-
-        $object = new $entity();
-
-        foreach ($req->fetchAll() as $item => $iValue)
-        {
-            $object->$item = $iValue;
-        }
-        return $object;
+        return $req->fetchAll();
     }
 
     protected function selectData($datas, $clauses)
     {
-        return $this->queryGenerator("SELECT", $datas, $clauses);
+        $query = $this->queryGenerator("SELECT", $datas, $clauses);
+        $req = $this->bdd->prepareQuery($query);
+        $req->execute();
+        return $req->fetchAll();
     }
 
     protected function insertData($datas)
     {
         $query = $this->queryGenerator("INSERT", $datas, []);
         $datas = get_object_vars($datas);
-        $req = $this->bdd->prepare($query);
+        $req = $this->bdd->prepareQuery($query);
         return $req->execute($datas);
     }
 
@@ -48,7 +51,7 @@ class Builder
     {
         $query = $this->queryGenerator("DELETE", $datas, $clauses);
         $datas = get_object_vars($datas);
-        $req = $this->bdd->prepare($query);
+        $req = $this->bdd->prepareQuery($query);
 
         return $req->execute($datas);
     }
@@ -56,7 +59,7 @@ class Builder
     protected function deleteData($data, $clauses)
     {
         $query = $this->queryGenerator("DELETE", $data, $clauses);
-        $req = $this->bdd->prepare($query);
+        $req = $this->bdd->prepareQuery($query);
         return $req->execute();
     }
 
@@ -84,6 +87,16 @@ class Builder
         switch($type)
         {
             case "SELECT":
+                $query = "SELECT * FROM ".$tableName;
+                $tableElement = $this->getTableElements($element);
+                $i = 0;
+                $elemLength = count($tableElement);
+                foreach ($clauses as $clause => $elem)
+                {
+                    $query .= ($i == $elemLength-1) ? "fin" : " ".$clause." ".$elem;
+                    $i++;
+                }
+                return $query;
                 break;
             case "INSERT":
                 $query = "INSERT INTO ".$tableName." (";

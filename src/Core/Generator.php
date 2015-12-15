@@ -27,7 +27,7 @@ class Generator
     public static function createEntity($name, Array $fields)
     {
         $name = ucfirst(strtolower($name));
-        $entity = "<?php \n\nnamespace Entity; \n\nclass ".$name."\n{\n";
+        $entity = "<?php \n\nnamespace Entity; \nuse \\Core\\Builder;\n\nclass ".$name."\n{\n";
         foreach ($fields as $field => $f)
         {
             $f['name'] = str_replace(" ", "_", $f['name']);
@@ -37,7 +37,7 @@ class Generator
                 $entity .= "\n    /**\n     * @var ".$f['type']."\n    **/\n    public $".strtolower($f['name']).";\n";
             }
         }
-        $entity .= "\n    public function __construct()\n    {\n    \n    }";
+        $entity .= "\n    public function __construct()\n    {\n        $"."QB = new Builder();\n        return $"."QB->hydrateEntity($"."this);\n    }";
 
         foreach ($fields as $field => $f)
         {

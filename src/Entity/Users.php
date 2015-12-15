@@ -1,6 +1,7 @@
 <?php 
 
 namespace Entity; 
+use \Core\Builder;
 
 class Users
 {
@@ -37,7 +38,8 @@ class Users
 
     public function __construct()
     {
-    
+        $QB = new Builder();
+        return $QB->hydrateEntity($this);
     }
     public function setId($id)
     {

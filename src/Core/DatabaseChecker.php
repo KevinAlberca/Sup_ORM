@@ -25,13 +25,15 @@ class DatabaseChecker
         $this->user = $user;
         $this->password = $password;
 
-        $this->bdd = Connexion::getConnexion($dbhost, $dbname, $user, $password);
+        $this->bdd = new \Core\AwHPDO('mysql:host='.$dbhost.';dbname='.$dbname.';charset=utf-8', $user, $password,[
+            \PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION
+        ]);
 
     }
 
     public function listAllTables()
     {
-        $req = $this->bdd->prepare("SELECT TABLE_NAME, COLUMN_NAME, DATA_TYPE FROM `information_schema`.`COLUMNS` WHERE TABLE_SCHEMA LIKE :db ");
+        $req = $this->bdd->prepareQuery("SELECT TABLE_NAME, COLUMN_NAME, DATA_TYPE FROM `information_schema`.`COLUMNS` WHERE TABLE_SCHEMA LIKE :db ");
         $req->execute([
             "db" => $this->dbname,
         ]);
@@ -39,9 +41,9 @@ class DatabaseChecker
         return $req->fetchAll();
     }
 
-    public function listThisTable($dbhost, $dbname, $dbuser, $dbpass, $tablename)
+    public function listThisTable($tablename)
     {
-        $req = $this->bdd->prepare("SELECT TABLE_NAME, COLUMN_NAME, DATA_TYPE FROM `information_schema`.`COLUMNS` WHERE TABLE_SCHEMA LIKE :db AND TABLE_NAME LIKE :table");
+        $req = $this->bdd->prepareQuery("SELECT TABLE_NAME, COLUMN_NAME, DATA_TYPE FROM `information_schema`.`COLUMNS` WHERE TABLE_SCHEMA LIKE :db AND TABLE_NAME LIKE :table");
         $req->execute([
            "db" => $this->dbname,
             "table" => $tablename
@@ -52,7 +54,7 @@ class DatabaseChecker
 
     public function checkIfExist($database)
     {
-        $req = $this->bdd->prepare("SELECT COUNT(*) as 'count' FROM `information_schema`.`SCHEMATA` WHERE `SCHEMA_NAME` LIKE :db");
+        $req = $this->bdd->prepareQuery("SELECT COUNT(*) as 'count' FROM `information_schema`.`SCHEMATA` WHERE `SCHEMA_NAME` LIKE :db");
         $req->execute([
             "db" => $database,
         ]);
