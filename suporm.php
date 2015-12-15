@@ -13,7 +13,7 @@ if(!empty($config))
     $databaseChecker = new Core\DatabaseChecker($config->database_host, $config->database_name, $config->database_user, $config->database_password);
     $database = new Core\Database($config->database_host, $config->database_name, $config->database_user, $config->database_password);
 }
-elseif(!empty($argv[2] && $argv[3] && $argv[4] && $argv[5])
+elseif(!empty($argv[2] && $argv[3] && $argv[4] && $argv[5]))
 {
     $databaseChecker = new Core\DatabaseChecker($argv[2], $argv[3], $argv[4], $argv[5]);
     $database = new Core\Database($argv[2], $argv[3], $argv[4], $argv[5]);
