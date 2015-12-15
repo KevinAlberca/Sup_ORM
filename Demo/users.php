@@ -18,7 +18,9 @@ $clauses =  [
 #################################################
 #            SELECTIONNE DES DONNEES            #
 #################################################
-// $ORM->select($user, $clauses);
+
+//var_dump($ORM->select($user, $clauses));
+
 $user->setName("Baptou") // On lui mets un Nom
 ->setEmail("medrup@loscil.fr") // Email
 ->setPassword(sha1("DEBILE")) // Password
@@ -29,9 +31,12 @@ $user->setName("Baptou") // On lui mets un Nom
 #            INSERT DES DONNEES            #
 ############################################
 /*
-if($ORM->save($user)){
+if($ORM->save($user))
+{
   echo "OK";
-} else {
+}
+else
+{
   echo "FAILED";
 }
 */
@@ -44,10 +49,26 @@ $user->setName("Baptiste") // On lui mets un Nom
 ->setPassword(sha1("Sup_ORM")) // Password
 ->setInscription_date(date("Y-m-d H:i:s")); // Inscription
 
-$ORM->update($user, $clauses);
+/*
+if($ORM->update($user, $clauses))
+{
+    echo "Mise a jour effectuee";
+}
+else
+{
+    echo "Mise a jour echouee";
+}
+*/
 
 
 ##############################################
 #            SUPPRIME DES DONNEES            #
 ##############################################
-$ORM->delete($user, $clauses);
+if($ORM->delete($user, $clauses))
+{
+  echo "Data supprimee avec succes";
+}
+else
+{
+  echo "Data non supprimee";
+}
