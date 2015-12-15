@@ -37,7 +37,7 @@ class Generator
                 $entity .= "\n    /**\n     * @var ".$f['type']."\n    **/\n    public $".strtolower($f['name']).";\n";
             }
         }
-        $entity .= "\n    public function __construct()\n    {\n        $"."QB = new Builder();\n        return $"."QB->hydrateEntity($"."this);\n    }";
+        $entity .= "\n    public function __construct()\n    {\n        $"."QB = new Builder();\n        return $"."QB"."->"."hydrateEntity($"."this);\n    }";
 
         foreach ($fields as $field => $f)
         {

@@ -40,9 +40,6 @@ class Database
         $query .= "PRIMARY KEY `id`(`id`)
         ) ENGINE = INNODB DEFAULT CHARSET = utf8;";
 
-	echo $query;
-
-
         $req = $this->bdd->prepareQuery($query);
         if($req->execute())
         {

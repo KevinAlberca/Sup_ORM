@@ -16,7 +16,7 @@ class Builder
 
     public function __construct()
     {
-        $this->bdd = new \Core\AwHPDO('mysql:host=127.0.0.1;dbname=test_orm', 'root', 'root', [
+        $this->bdd = new \Core\AwHPDO('mysql:host=127.0.0.1;dbname=sup_orm', 'supinternet', 'studies', [
             \PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION
         ]);
     }
