@@ -6,23 +6,22 @@ if(file_exists(__DIR__."/config.json"))
 {
     $config = json_decode(file_get_contents(__DIR__."/config.json"));
 }
-else
-{
-    echo "Merci de preciser a chaque commande vos identifiants a la base de donnees\nphp suporm.php {{ACTION}} DBHOST DBNAME DBUSER DBPASS\n";
-}
 
 # Declaration des objets qui vont nous servir
-if(isset($config) && !empty($config))
+if(!empty($config))
 {
     $databaseChecker = new Core\DatabaseChecker($config->database_host, $config->database_name, $config->database_user, $config->database_password);
     $database = new Core\Database($config->database_host, $config->database_name, $config->database_user, $config->database_password);
 }
+elseif(!empty($argv[2] && $argv[3] && $argv[4] && $argv[5])
+{
+    $databaseChecker = new Core\DatabaseChecker($argv[2], $argv[3], $argv[4], $argv[5]);
+    $database = new Core\Database($argv[2], $argv[3], $argv[4], $argv[5]);
+}
 else
 {
-    @$databaseChecker = new Core\DatabaseChecker($argv[2], $argv[3], $argv[4], $argv[5]);
-    @$database = new Core\Database($argv[2], $argv[3], $argv[4], $argv[5]);
+    echo "Merci de preciser a chaque commande vos identifiants a la base de donnees\nphp suporm.php {{ACTION}} DBHOST DBNAME DBUSER DBPASS\n";
 }
-
 
 if(!isset($argv[1]) && empty($argv[1]))
 {
@@ -90,9 +89,9 @@ switch($argv[1]) {
             {
                 $fields= [];
                 if($database->createTable($argv[2], $fields)){
-                    echo "\033[1;32m"."La Table a ete creee dans la base de donnee.\nL'Entity est disponible a cet endroit :\n".__DIR__."/Entity/".$argv[2].".php";
+                    echo "\033[1;32m"."La Table a ete creee dans la base de donnee.\nL'Entity est disponible a cet endroit :\n".__DIR__."/src/Entity/".$argv[2].".php";
                 } else {
-                    echo "\033[0;31m"."La table n'a pas pu etre creee";
+		  echo "\033[0;31m"."La table n'a pas pu etre creee";
                 }
             }
             else
@@ -124,7 +123,7 @@ switch($argv[1]) {
         if(!empty($config) || !empty($argv[6]))
         {
             $data = [];
-            foreach($databaseChecker->listThisTable($argv[2], $argv[3], $argv[4], $argv[5], $argv[6]) as $database => $table){
+            foreach($databaseChecker->listThisTable($argv[6]) as $database => $table){
                 $data[] = [
                     'name' => $table['COLUMN_NAME'],
                     'type' => $table['DATA_TYPE'],
