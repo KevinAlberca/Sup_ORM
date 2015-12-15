@@ -34,11 +34,13 @@ class Database
         $query = "CREATE TABLE ".strtolower(str_replace(' ', "_", $name))." (
         id int NOT NULL AUTO_INCREMENT,";
         foreach ($fields as $field => $f) {
-            $query .="\n".$f['name']." ".$f['type']." NOT NULL,\n";
+            $query .=" ".$f['name']." ".$f['type']." NOT NULL,\n";
         }
 
         $query .= "PRIMARY KEY `id`(`id`)
         ) ENGINE = INNODB DEFAULT CHARSET = utf8;";
+
+	echo $query;
 
 
         $req = $this->bdd->prepareQuery($query);
@@ -96,7 +98,8 @@ class Database
 
     private function deleteModel($name)
     {
-        if(unlink(__DIR__."/../../Entity/".$name.".php"))
+      $name = ucfirst(strtolower($name));
+        if(unlink(__DIR__."/../Entity/".$name.".php"))
         {
             return true;
         }
