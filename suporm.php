@@ -153,8 +153,8 @@ switch($argv[1]) {
             "\n\033[1;36m"."x database:exist -> Verifie si la base de donnee est existante".
             "\n\033[0;36m"."x database:list -> Liste les tables de la base de donnee".
             "\n\033[1;36m"."x create:table -> Creer le fichier de configuration".
-            "\n\033[0;36m"."x --config -> Creer le fichier de configuration".
-            "\n\033[1;36m"."x delete:table -> Creer le fichier de configuration";
+            "\n\033[0;36m"."x delete:table -> Creer le fichier de configuration".
+            "\n\033[1;36m"."x generate:entity -> Creer le Entity de la Table donnee en parametre";
         break;
 }
 
