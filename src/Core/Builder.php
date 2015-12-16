@@ -14,14 +14,16 @@ class Builder
 {
     private $bdd;
 
-    protected $dbhost;
-    protected $dbname;
-    protected $dbuser;
-    protected $dbpass;
+    public $dbhost;
+    public $dbname;
+    public $dbuser;
+    public $dbpass;
 
     public function __construct()
     {
-      $this->bdd = new \Core\AwHPDO('mysql:host='.$this->dbhost.';dbname='.$this->dbname, $this->dbuser, $this->dbpass);
+        //var_dump($this->dbhost, $this->dbname, $this->dbuser, $this->dbpass);
+        //$this->bdd = new \Core\AwHPDO('mysql:host='.$this->dbhost.';dbname='.$this->dbname, $this->dbuser, $this->dbpass);
+        $this->bdd = new \Core\AwHPDO('mysql:host=DBHOST;dbname=DBNAME','DBUSER','DBPASS');
     }
 
     public function hydrateEntity($entity)
@@ -48,8 +50,6 @@ class Builder
         $query = $this->queryGenerator("INSERT", $datas, []);
         $datas = get_object_vars($datas);
         $req = $this->bdd->prepareQuery($query);
-	var_dump($query);
-	var_dump($datas);
         return $req->execute($datas);
     }
 
@@ -156,7 +156,7 @@ class Builder
         }
     }
 
-    protected function setConf($conf)
+    public function setConf($conf)
     {
        $this->dbhost = $conf[0];
        $this->dbname = $conf[1];
