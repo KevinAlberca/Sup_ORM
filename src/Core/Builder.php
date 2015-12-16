@@ -8,17 +8,20 @@
 namespace Core;
 
 use \Core\Connexion;
-use Core\AwHPDO;
+use \Core\AwHPDO;
 
 class Builder
 {
     private $bdd;
 
-    public function __construct($dbhost, $dbname, $dbuser, $dbpass)
+    protected $dbhost;
+    protected $dbname;
+    protected $dbuser;
+    protected $dbpass;
+
+    public function __construct()
     {
-      $this->bdd = new \Core\AwHPDO('mysql:host='.$dbhost.';dbname='.$dbname, $dbuser, $dbpass, [
-            \PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION
-        ]);
+      $this->bdd = new \Core\AwHPDO('mysql:host='.$this->dbhost.';dbname='.$this->dbname, $this->dbuser, $this->dbpass);
     }
 
     public function hydrateEntity($entity)
@@ -27,7 +30,6 @@ class Builder
         $tableName = explode("\\", $tableName)[1];
         $query = "SELECT * FROM ".$tableName;
 
-	var_dump($query);
         $req = $this->bdd->prepareQuery($query);
         $req->execute();
         return $req->fetchAll();
@@ -37,7 +39,7 @@ class Builder
     {
         $query = $this->queryGenerator("SELECT", $datas, $clauses);
         $req = $this->bdd->prepareQuery($query);
-	$req->execute();
+    	$req->execute();
         return $req->fetchAll();
     }
 
@@ -150,5 +152,13 @@ class Builder
                 return "ERROR";
                 break;
         }
+    }
+
+    protected function setConf($conf)
+    {
+       $this->dbhost = $conf[0];
+       $this->dbname = $conf[1];
+       $this->dbuser = $conf[2];
+       $this->dbpass = $conf[3];
     }
 }
