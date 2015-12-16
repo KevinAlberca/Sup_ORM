@@ -1,4 +1,4 @@
-<?php
+<?php 
 /**
  * Created by PhpStorm.
  * User: AwH
@@ -10,6 +10,7 @@ require_once __DIR__."/../vendor/autoload.php";
 $ORM = new ORM(); // Declaration de l'ORM
 $user = new \Entity\Users(); // On instancie la classe Utilisateur
 
+
 $clauses =  [
     "WHERE" => "name = 'Baptou'"
 ];
@@ -19,7 +20,7 @@ $clauses =  [
 #            SELECTIONNE DES DONNEES            #
 #################################################
 
-//var_dump($ORM->select($user, $clauses));
+var_dump($ORM->select($user));
 
 $user->setName("Baptou") // On lui mets un Nom
 ->setEmail("medrup@loscil.fr") // Email
@@ -30,16 +31,16 @@ $user->setName("Baptou") // On lui mets un Nom
 ############################################
 #            INSERT DES DONNEES            #
 ############################################
-/*
-if($ORM->save($user))
-{
-  echo "OK";
-}
-else
-{
-  echo "FAILED";
-}
-*/
+
+// if($ORM->save($user))
+// {
+//   echo "OK";
+// }
+// else
+// {
+//   echo "FAILED";
+// }
+
 #################################################
 #            MISE A JOUR DES DONNEES            #
 #################################################
@@ -64,6 +65,7 @@ else
 ##############################################
 #            SUPPRIME DES DONNEES            #
 ##############################################
+/*
 if($ORM->delete($user, $clauses))
 {
   echo "Data supprimee avec succes";
@@ -72,3 +74,5 @@ else
 {
   echo "Data non supprimee";
 }
+
+*/
