@@ -31,11 +31,6 @@ class Users
     **/
     public $inscription_date;
 
-    /**
-     * @var datetime
-    **/
-    public $last_connexion;
-
     public function __construct()
     {
         $QB = new Builder();
@@ -94,17 +89,6 @@ class Users
     public function getInscription_date()
     {
         return $this->inscription_date;
-    }
-
-    public function setLast_connexion($last_connexion)
-    {
-        $this->last_connexion = $last_connexion;
-        return $this;    
-    }
-
-    public function getLast_connexion()
-    {
-        return $this->last_connexion;
     }
 
 }

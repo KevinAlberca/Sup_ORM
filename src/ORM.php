@@ -12,6 +12,12 @@ use Core\Builder;
 
 class ORM extends Builder
 {
+  public function __construct($dbhost, $dbname, $dbuser, $dbpass)
+  {
+    //var_dump($dbhost, $dbname, $dbuser, $dbpass);
+
+    parent::__construct($dbhost, $dbname, $dbuser, $dbpass);
+  }
     public function getAll($entity)
     {
         return $this->hydrateEntity($entity);
